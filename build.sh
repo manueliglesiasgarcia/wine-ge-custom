@@ -60,7 +60,7 @@ dest_file="${bin_dir}-build.tar.gz"
 upload_file="wine-${filename_opts}${version}-${arch}.tar.xz"
 
 InstallDependencies() {
-    sudo apt install -y autoconf bison ccache debhelper desktop-file-utils docbook-to-man \
+    sudo apt install -y dh-autoreconf autoconf bison ccache debhelper desktop-file-utils docbook-to-man \
         docbook-utils docbook-xsl flex fontforge gawk gettext libacl1-dev \
         libasound2-dev libcloog-ppl1 libcups2-dev libdbus-1-dev \
         libgcrypt-dev libgif-dev libglu1-mesa-dev libgsm1-dev libgtk-3-dev \
