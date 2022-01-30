@@ -45,7 +45,7 @@
     patch -Np1 < ../patches/LoL/LoL-6.17+-syscall-fix.patch
     patch -Np1 < ../patches/LoL/LoL-abi.vsyscall32-alternative_patch_by_using_a_fake_cs_segment.patch
     patch -Np1 < ../patches/LoL/LoL-broken-client-update-fix.patch
-    patch -Np1 < ../patches/LoL/LoL-launcher-client-connectivity-fix-0001-ws2_32-Return-a-valid-value-for-WSAIoctl-SIO_IDEAL_S.patch
+    # patch -Np1 < ../patches/LoL/LoL-launcher-client-connectivity-fix-0001-ws2_32-Return-a-valid-value-for-WSAIoctl-SIO_IDEAL_S.patch
     patch -Np1 < ../patches/LoL/LoL-garena-childwindow.patch
 
 
