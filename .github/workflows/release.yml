@@ -60,13 +60,12 @@ jobs:
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-i386
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-amd64
 
-      - name: Push patch files
+      - name: Push Wine,Staging and patches files
         run: |
-          mv wine wine-src
           ssh ubuntu@buildbot-bionic-i386 "rm -r ~/buildbot/runners/wine/patches/"
           ssh ubuntu@buildbot-bionic-amd64 "rm -r ~/buildbot/runners/wine/patches/"
-          scp -r wine-src ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
-          scp -r wine-src ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+          scp -r wine ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
+          scp -r wine ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp -r wine-staging ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
           scp -r wine-staging ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
@@ -95,7 +94,10 @@ jobs:
           ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine/ && bash patches/protonprep.sh"
 
       - name: Build Wine GE
-        run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
+        run: |
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && mv wine wine-src"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && mv wine wine-src"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
   
       - name: Move Archive
         run: |
@@ -166,13 +168,12 @@ jobs:
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-i386
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-amd64
 
-      - name: Push patch files
+      - name: Push Wine,Staging and patches files
         run: |
-          mv wine wine-src
           ssh ubuntu@buildbot-bionic-i386 "rm -r ~/buildbot/runners/wine/patches/"
           ssh ubuntu@buildbot-bionic-amd64 "rm -r ~/buildbot/runners/wine/patches/"
-          scp -r wine-src ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
-          scp -r wine-src ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+          scp -r wine ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
+          scp -r wine ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp -r wine-staging ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
           scp -r wine-staging ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
@@ -201,7 +202,10 @@ jobs:
           ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine/ && bash patches/protonprep-LoL.sh"
 
       - name: Build Wine GE
-        run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
+        run: |
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && mv wine wine-src"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && mv wine wine-src"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
   
       - name: Move Archive
         run: |
