@@ -91,8 +91,8 @@ jobs:
 
       - name: Apply patches
         run: |
-          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine/patches && ./protonprep.sh"
-          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine/patches && ./protonprep.sh"
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine/ && bash patches/protonprep.sh"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine/ && bash patches/protonprep.sh"
 
       - name: Build Wine GE
         run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
@@ -197,8 +197,8 @@ jobs:
 
       - name: Apply patches
         run: |
-          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine/patches && ./protonprep-LoL.sh"
-          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine/patches && ./protonprep-LoL.sh"
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine/ && bash patches/protonprep-LoL.sh"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine/ && bash patches/protonprep-LoL.sh"
 
       - name: Build Wine GE
         run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
