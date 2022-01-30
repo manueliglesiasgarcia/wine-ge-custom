@@ -16,7 +16,7 @@ jobs:
         run: git clone -b ${{ steps.branch-name.outputs.current_branch }} --recurse-submodules ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} .
 
       - name: Get Proton Versions
-        run: echo "RELEASE_VERSION=$(cat VERSION | cut -d ' ' -f 2 | tr '[:upper:]' '[:lower:]')-$(cat VERSION | cut -d ' ' -f 3 | cut -d '-' -f 1)" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=$(cat VERSION | cut -d ' ' -f 3 | cut -d '-' -f 1)" >> $GITHUB_ENV
         
       - name: Display version
         run: echo ${{ env.RELEASE_VERSION }}
@@ -64,10 +64,10 @@ jobs:
         run: |
           ssh ubuntu@buildbot-bionic-i386 "rm -r ~/buildbot/runners/wine/patches/"
           ssh ubuntu@buildbot-bionic-amd64 "rm -r ~/buildbot/runners/wine/patches/"
-          scp -r wine ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
-          scp -r wine ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
-          scp -r wine-staging ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
-          scp -r wine-staging ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b wine-${{ env.RELEASE_VERSION }} https://github.com/wine-mirror/wine/"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b wine-${{ env.RELEASE_VERSION }} https://github.com/wine-mirror/wine/"
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b ${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b ${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
           scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
           scp -r patches ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp build.sh ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
@@ -172,10 +172,10 @@ jobs:
         run: |
           ssh ubuntu@buildbot-bionic-i386 "rm -r ~/buildbot/runners/wine/patches/"
           ssh ubuntu@buildbot-bionic-amd64 "rm -r ~/buildbot/runners/wine/patches/"
-          scp -r wine ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
-          scp -r wine ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
-          scp -r wine-staging ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
-          scp -r wine-staging ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b wine-${{ env.RELEASE_VERSION }} https://github.com/wine-mirror/wine/"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b wine-${{ env.RELEASE_VERSION }} https://github.com/wine-mirror/wine/"
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b ${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b ${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
           scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
           scp -r patches ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp build.sh ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
