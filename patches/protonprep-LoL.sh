@@ -5,7 +5,7 @@
     cd ..
 
     #WINE
-    cd wine
+    cd wine-src
 
     echo "applying staging patches"
     ../wine-staging/patches/patchinstall.sh DESTDIR="." --all \
