@@ -14,7 +14,7 @@
 
 ### (2) WINE PATCHING ###
 
-    cd wine
+    cd wine-src
 
 ### (2-1) PROBLEMATIC COMMIT REVERT SECTION ###
 
