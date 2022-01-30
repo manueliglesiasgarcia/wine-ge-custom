@@ -60,6 +60,43 @@ jobs:
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-i386
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-amd64
 
+      - name: Install dependencies
+        run: |
+          ssh ubuntu@buildbot-bionic-i386 "
+            sudo apt install -y dh-autoreconf autoconf bison ccache debhelper desktop-file-utils docbook-to-man \
+            docbook-utils docbook-xsl flex fontforge gawk gettext libacl1-dev \
+            libasound2-dev libcloog-ppl1 libcups2-dev libdbus-1-dev \
+            libgcrypt-dev libgif-dev libglu1-mesa-dev libgsm1-dev libgtk-3-dev \
+            liblcms2-dev libldap2-dev libmpg123-dev libncurses5-dev \
+            libopenal-dev libosmesa6-dev libpcap-dev libpulse-dev \
+            libssl-dev libtiff5-dev libudev-dev libv4l-dev libva-dev libxslt1-dev libxt-dev \
+            ocl-icd-opencl-dev prelink valgrind linux-libc-dev libppl14 libcolord2 libvulkan-dev \
+            libgnutls28-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
+            libpng-dev libsdl2-dev libavcodec-dev \
+            libavutil-dev libswresample-dev libavcodec58 libswresample3 libavutil56 libfaudio0 libfaudio-dev \
+            libvkd3d1 libvkd3d-dev libvkd3d-utils1 libvkd3d-shader1 vkd3d-demos libvulkan1 \
+            libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
+            gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x \
+            gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+          "
+          ssh ubuntu@buildbot-bionic-amd64 "
+            sudo apt install -y dh-autoreconf autoconf bison ccache debhelper desktop-file-utils docbook-to-man \
+            docbook-utils docbook-xsl flex fontforge gawk gettext libacl1-dev \
+            libasound2-dev libcloog-ppl1 libcups2-dev libdbus-1-dev \
+            libgcrypt-dev libgif-dev libglu1-mesa-dev libgsm1-dev libgtk-3-dev \
+            liblcms2-dev libldap2-dev libmpg123-dev libncurses5-dev \
+            libopenal-dev libosmesa6-dev libpcap-dev libpulse-dev \
+            libssl-dev libtiff5-dev libudev-dev libv4l-dev libva-dev libxslt1-dev libxt-dev \
+            ocl-icd-opencl-dev prelink valgrind linux-libc-dev libppl14 libcolord2 libvulkan-dev \
+            libgnutls28-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
+            libpng-dev libsdl2-dev libavcodec-dev \
+            libavutil-dev libswresample-dev libavcodec58 libswresample3 libavutil56 libfaudio0 libfaudio-dev \
+            libvkd3d1 libvkd3d-dev libvkd3d-utils1 libvkd3d-shader1 vkd3d-demos libvulkan1 \
+            libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
+            gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x \
+            gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+          "
+
       - name: Push Wine,Staging and patches files
         run: |
           ssh ubuntu@buildbot-bionic-i386 "rm -r ~/buildbot/runners/wine/patches/"
@@ -97,7 +134,7 @@ jobs:
         run: |
           ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && mv wine wine-src"
           ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && mv wine wine-src"
-          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep"
   
       - name: Move Archive
         run: |
@@ -168,6 +205,43 @@ jobs:
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-i386
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-amd64
 
+      - name: Install dependencies
+        run: |
+          ssh ubuntu@buildbot-bionic-i386 "
+            sudo apt install -y dh-autoreconf autoconf bison ccache debhelper desktop-file-utils docbook-to-man \
+            docbook-utils docbook-xsl flex fontforge gawk gettext libacl1-dev \
+            libasound2-dev libcloog-ppl1 libcups2-dev libdbus-1-dev \
+            libgcrypt-dev libgif-dev libglu1-mesa-dev libgsm1-dev libgtk-3-dev \
+            liblcms2-dev libldap2-dev libmpg123-dev libncurses5-dev \
+            libopenal-dev libosmesa6-dev libpcap-dev libpulse-dev \
+            libssl-dev libtiff5-dev libudev-dev libv4l-dev libva-dev libxslt1-dev libxt-dev \
+            ocl-icd-opencl-dev prelink valgrind linux-libc-dev libppl14 libcolord2 libvulkan-dev \
+            libgnutls28-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
+            libpng-dev libsdl2-dev libavcodec-dev \
+            libavutil-dev libswresample-dev libavcodec58 libswresample3 libavutil56 libfaudio0 libfaudio-dev \
+            libvkd3d1 libvkd3d-dev libvkd3d-utils1 libvkd3d-shader1 vkd3d-demos libvulkan1 \
+            libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
+            gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x \
+            gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+          "
+          ssh ubuntu@buildbot-bionic-amd64 "
+            sudo apt install -y dh-autoreconf autoconf bison ccache debhelper desktop-file-utils docbook-to-man \
+            docbook-utils docbook-xsl flex fontforge gawk gettext libacl1-dev \
+            libasound2-dev libcloog-ppl1 libcups2-dev libdbus-1-dev \
+            libgcrypt-dev libgif-dev libglu1-mesa-dev libgsm1-dev libgtk-3-dev \
+            liblcms2-dev libldap2-dev libmpg123-dev libncurses5-dev \
+            libopenal-dev libosmesa6-dev libpcap-dev libpulse-dev \
+            libssl-dev libtiff5-dev libudev-dev libv4l-dev libva-dev libxslt1-dev libxt-dev \
+            ocl-icd-opencl-dev prelink valgrind linux-libc-dev libppl14 libcolord2 libvulkan-dev \
+            libgnutls28-dev libgstreamer-plugins-base1.0-dev libgstreamer1.0-dev \
+            libpng-dev libsdl2-dev libavcodec-dev \
+            libavutil-dev libswresample-dev libavcodec58 libswresample3 libavutil56 libfaudio0 libfaudio-dev \
+            libvkd3d1 libvkd3d-dev libvkd3d-utils1 libvkd3d-shader1 vkd3d-demos libvulkan1 \
+            libgstreamer1.0-0 gstreamer1.0-plugins-base gstreamer1.0-plugins-good gstreamer1.0-plugins-bad \
+            gstreamer1.0-plugins-ugly gstreamer1.0-libav gstreamer1.0-doc gstreamer1.0-tools gstreamer1.0-x \
+            gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
+          "
+
       - name: Push Wine,Staging and patches files
         run: |
           ssh ubuntu@buildbot-bionic-i386 "rm -r ~/buildbot/runners/wine/patches/"
@@ -205,7 +279,7 @@ jobs:
         run: |
           ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && mv wine wine-src"
           ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && mv wine wine-src"
-          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep"
   
       - name: Move Archive
         run: |
