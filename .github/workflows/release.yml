@@ -13,7 +13,7 @@ jobs:
         uses: tj-actions/branch-names@v5.1
     
       - name: Clone repo
-        run: git clone -b ${{ steps.branch-name.outputs.current_branch }} --recurse-submodules ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} .
+        run: git clone -b ${{ steps.branch-name.outputs.current_branch }} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} . && git submodule update --init buildbot
 
       - name: Get Proton Versions
         run: echo "RELEASE_VERSION=$(cat VERSION | cut -d ' ' -f 3 | cut -d '-' -f 1)" >> $GITHUB_ENV
@@ -121,7 +121,7 @@ jobs:
         uses: tj-actions/branch-names@v5.1
     
       - name: Clone repo
-        run: git clone -b ${{ steps.branch-name.outputs.current_branch }} --recurse-submodules ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} .
+        run: git clone -b ${{ steps.branch-name.outputs.current_branch }} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} . && git submodule update --init buildbot
 
       - name: Get Proton Versions
         run: echo "RELEASE_VERSION=$(cat VERSION | cut -d ' ' -f 3 | cut -d '-' -f 1)" >> $GITHUB_ENV
