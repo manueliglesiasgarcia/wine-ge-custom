@@ -77,100 +77,6 @@ InstallDependencies() {
         gstreamer1.0-alsa gstreamer1.0-gl gstreamer1.0-gtk3 gstreamer1.0-qt5 gstreamer1.0-pulseaudio
 }
 
-DownloadWine() {
-    trap TrapClean ERR INT
-    # If a git repo as been specified use this instead and return
-    if [[ $repo_url ]]; then
-        # The branch name defaults to the build name
-        branch_name=${branch_name:-$build_name}
-        if [ -d "$source_dir" ]; then
-          git -C "$source_dir" clean -dfx
-          if [ $(git -C "$source_dir" branch -v | grep -o -E "$branch_name\s+") ]; then
-                git -C "$source_dir" branch -m "$branch_name" "$branch_name"-old
-          fi
-	  git -C "$source_dir" fetch "$repo_url" "$branch_name":"$branch_name"
-	  git -C "$source_dir" checkout "$branch_name"
-          if [ $(git -C "$source_dir" branch -v | grep -o -E "$branch_name-old\s+") ]; then
-                git -C "$source_dir" branch -D "$branch_name"-old
-          fi
-	else
-            git clone -b "$branch_name" "$repo_url" "$source_dir"
-	fi
-        return
-    fi
-
-    IFS="." read major minor patch_num <<< "$version"
-    if [[ $major -gt 1 && $minor -gt 0 ]]; then
-        version_base="$major.x"
-        wine_archive="wine-${version}.tar.xz"
-    elif [[ $major -gt 1 && $minor -eq 0 ]]; then
-        version_base=${version:0:3}
-        wine_archive="wine-${version}.tar.xz"
-    else
-        version_base=${version:0:3}
-        wine_archive="wine-${version}.tar.bz2"
-    fi
-
-    mkdir -p .cache
-    if [ ! -f ".cache/$wine_archive" ]; then
-        echo "Downloading Wine ${version}"
-        wget http://dl.winehq.org/wine/source/$version_base/${wine_archive} -O .cache/${wine_archive}
-    else
-        echo "Wine ${version} already cached"
-    fi
-    tar xf .cache/$wine_archive
-    if [ -d ${source_dir} ]; then
-        rm -rf ${source_dir}
-    fi
-    mv wine-${version} ${source_dir}
-}
-
-DownloadWineStaging() {
-    trap TrapClean ERR INT
-    local ignore_errors
-    if [ $STAGING ]; then
-        echo "Adding Wine Staging patches"
-        cd ${source_dir}
-        version=$( echo $version | cut -d '-' -f 2)
-        staging_archive="v${version}.tar.gz"
-        wget https://github.com/wine-staging/wine-staging/archive/${staging_archive} || true
-        if [ -f $staging_archive ]; then
-            tar xvzf ${staging_archive} --strip-components 1
-            rm ${staging_archive}
-            ignore_errors=false
-        else
-            echo "Wine staging v$version not found, reverting to current git master, safety not guaranteed."
-            clone https://github.com/wine-staging/wine-staging.git ${source_dir}/wine-staging-git
-            cd ${source_dir}
-            mv ${source_dir}/wine-staging-git/* ${source_dir}
-            rm -rf ${source_dir}/wine-staging-git
-            ignore_errors=true
-        fi
-    fi
-}
-
-ApplyPatch() {
-    trap TrapClean ERR INT
-    cd ${root_dir}
-    patch_path=$(realpath $patch)
-    if [ ! -f $patch_path ]; then
-        echo "Couldn't find patch $patch_path"
-        exit 2
-    fi
-    echo "Applying patch $patch_path"
-    cd $source_dir
-    for file in $patch_path; do
-      if [[ $file == *.sh ]]
-        then
-                bash $patch_path
-        else
-                patch -p1 < $patch_path
-      fi
-    done;
-    
-}
-
-
 BuildWine() {
     trap TrapClean ERR INT
     prefix=${root_dir}/${bin_dir}
@@ -327,11 +233,6 @@ Build() {
         if [ "$INSTALL_DEPS" = "1" ]; then
             InstallDependencies
         fi
-        # DownloadWine
-        # DownloadWineStaging
-        if [ "$patch" ]; then
-            ApplyPatch
-        fi
         BuildWine
 
         if [ "$(uname -m)" = "x86_64" ]; then
@@ -387,24 +288,6 @@ Package() {
     tar cJf ${upload_file} ${bin_dir}
 }
 
-UploadRunner() {
-    trap TrapClean ERR INT
-    if [ ! $NOUPLOAD ]; then
-        cd ${root_dir}
-        runner_upload ${runner_name} ${filename_opts}${version} ${arch} ${dest_file}
-    fi
-}
-
-PostClean() {
-    if [ ! $KEEP ]; then
-        cd ${root_dir}
-        rm -rf ${build_dir} ${bin_dir} ${wine32_archive} ${dest_file}
-      if [ ! $KEEP_UPLOAD_FILE ]; then
-        rm -rf ${upload_file}
-      fi
-    fi
-    echo "Cleaned up."
-}
 
 TrapClean() {
     if [ ! $KEEP ]; then
@@ -420,6 +303,4 @@ if [ $1 ]; then
 else
     Build
     Package
-    UploadRunner
-    PostClean
 fi

@@ -88,9 +88,14 @@ jobs:
           ssh ubuntu@buildbot-bionic-amd64 'sudo chown -R ubuntu:ubuntu ~/.ssh/config'
           ssh ubuntu@buildbot-bionic-amd64 "ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
           ssh ubuntu@buildbot-bionic-amd64 'sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot32'
-      
+
+      - name: Apply patches
+        run: |
+        ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine/patches && ./protonprep.sh"
+        ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine/patches && ./protonprep.sh"
+
       - name: Build Wine GE
-        run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --patch patches/protonprep-ci.sh --usemingw --noupload --keep --dependencies"
+        run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
   
       - name: Move Archive
         run: |
@@ -189,9 +194,14 @@ jobs:
           ssh ubuntu@buildbot-bionic-amd64 'sudo chown -R ubuntu:ubuntu ~/.ssh/config'
           ssh ubuntu@buildbot-bionic-amd64 "ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1"
           ssh ubuntu@buildbot-bionic-amd64 'sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot32'
-      
+
+      - name: Apply patches
+        run: |
+        ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine/patches && ./protonprep-LoL.sh"
+        ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine/patches && ./protonprep-LoL.sh"
+
       - name: Build Wine GE
-        run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --patch patches/protonprep-LoL.sh --usemingw --noupload --keep --dependencies"
+        run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --usemingw --noupload --keep --dependencies"
   
       - name: Move Archive
         run: |
