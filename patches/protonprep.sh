@@ -3,7 +3,7 @@
 ### (1) PREP SECTION ###
 
     #WINE STAGING
-    cd wine-staging
+    cd wine-staging-7.1
 
     # faudio revert fix in staging:
     patch -Np1 < ../patches/wine-hotfixes/staging/x3daudio_staging_revert.patch
