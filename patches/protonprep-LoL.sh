@@ -2,10 +2,14 @@
 
     #WINE STAGING
     cd wine-staging
+    git reset --hard HEAD
+    git clean -xdf
     cd ..
 
     #WINE
     cd wine
+    git reset --hard HEAD
+    git clean -xdf
 
     echo "applying staging patches"
     ../wine-staging/patches/patchinstall.sh DESTDIR="." --all \

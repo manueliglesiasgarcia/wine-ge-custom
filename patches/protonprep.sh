@@ -4,6 +4,8 @@
 
     #WINE STAGING
     cd wine-staging
+    git reset --hard HEAD
+    git clean -xdf
 
     # faudio revert fix in staging:
     patch -Np1 < ../patches/wine-hotfixes/staging/x3daudio_staging_revert.patch
@@ -15,6 +17,8 @@
 ### (2) WINE PATCHING ###
 
     cd wine
+    git reset --hard HEAD
+    git clean -xdf
 
 ### (2-1) PROBLEMATIC COMMIT REVERT SECTION ###
 
