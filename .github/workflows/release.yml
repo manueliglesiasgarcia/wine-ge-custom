@@ -66,8 +66,8 @@ jobs:
           ssh ubuntu@buildbot-bionic-amd64 "rm -r ~/buildbot/runners/wine/patches/"
           ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b wine-${{ env.RELEASE_VERSION }} https://github.com/wine-mirror/wine/"
           ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b wine-${{ env.RELEASE_VERSION }} https://github.com/wine-mirror/wine/"
-          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b ${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
-          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b ${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b v${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b v${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
           scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
           scp -r patches ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp build.sh ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
@@ -174,8 +174,8 @@ jobs:
           ssh ubuntu@buildbot-bionic-amd64 "rm -r ~/buildbot/runners/wine/patches/"
           ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b wine-${{ env.RELEASE_VERSION }} https://github.com/wine-mirror/wine/"
           ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b wine-${{ env.RELEASE_VERSION }} https://github.com/wine-mirror/wine/"
-          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b ${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
-          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b ${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
+          ssh ubuntu@buildbot-bionic-i386 "cd buildbot/runners/wine && git clone -b v${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && git clone -b v${{ env.RELEASE_VERSION }} https://github.com/wine-staging/wine-staging"
           scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
           scp -r patches ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp build.sh ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
