@@ -47,24 +47,33 @@ jobs:
           touch ~/.ssh/config
           sudo ./1-setup-container-networking.sh buildbot-bionic-i386 buildbot-bionic-amd64
           cat ~/.ssh/config
+
       - name: Execute setup-container.sh
         working-directory: ./buildbot
         run: |
           ./setup-container.sh buildbot-bionic-i386
           ./setup-container.sh buildbot-bionic-amd64
+
       - name: Execute ssh-copy-id for buildbot32 and buildbot64
         run: |
           ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-i386
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-amd64
+
       - name: Push patch files
         run: |
+          mv wine wine-src
           ssh ubuntu@buildbot-bionic-i386 "rm -r ~/buildbot/runners/wine/patches/"
           ssh ubuntu@buildbot-bionic-amd64 "rm -r ~/buildbot/runners/wine/patches/"
-          scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine
-          scp -r patches ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine
+          scp -r wine-src ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
+          scp -r wine-src ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+          scp -r wine-staging ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
+          scp -r wine-staging ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+          scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
+          scp -r patches ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp build.sh ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
           scp build.sh ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+
       - name: Execute buildbot32-sshsetup
         run: |
           
@@ -139,24 +148,33 @@ jobs:
           touch ~/.ssh/config
           sudo ./1-setup-container-networking.sh buildbot-bionic-i386 buildbot-bionic-amd64
           cat ~/.ssh/config
+
       - name: Execute setup-container.sh
         working-directory: ./buildbot
         run: |
           ./setup-container.sh buildbot-bionic-i386
           ./setup-container.sh buildbot-bionic-amd64
+
       - name: Execute ssh-copy-id for buildbot32 and buildbot64
         run: |
           ssh-keygen -q -t rsa -N '' -f ~/.ssh/id_rsa <<<y >/dev/null 2>&1
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-i386
           sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot-bionic-amd64
+
       - name: Push patch files
         run: |
+          mv wine wine-src
           ssh ubuntu@buildbot-bionic-i386 "rm -r ~/buildbot/runners/wine/patches/"
           ssh ubuntu@buildbot-bionic-amd64 "rm -r ~/buildbot/runners/wine/patches/"
-          scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine
-          scp -r patches ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine
+          scp -r wine-src ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
+          scp -r wine-src ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+          scp -r wine-staging ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
+          scp -r wine-staging ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+          scp -r patches ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
+          scp -r patches ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
           scp build.sh ubuntu@buildbot-bionic-i386:~/buildbot/runners/wine/
           scp build.sh ubuntu@buildbot-bionic-amd64:~/buildbot/runners/wine/
+
       - name: Execute buildbot32-sshsetup
         run: |
           
@@ -173,12 +191,13 @@ jobs:
           ssh ubuntu@buildbot-bionic-amd64 'sshpass -p "ubuntu" ssh-copy-id -o StrictHostKeyChecking=no ubuntu@buildbot32'
       
       - name: Build Wine GE
-        run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --patch patches/protonprep-LoL-ci.sh --usemingw --noupload --keep --dependencies"
+        run: ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ./build.sh --as lutris --version ${{ env.RELEASE_VERSION }} --with https://github.com/wine-mirror/wine/ --staging --branch ${{ env.RELEASE_VERSION }} --patch patches/protonprep-LoL.sh --usemingw --noupload --keep --dependencies"
   
       - name: Move Archive
         run: |
           ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-*.tar.xz ~/"
           scp ubuntu@buildbot-bionic-amd64:~/wine-*.tar.xz ~/
+
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
         with:

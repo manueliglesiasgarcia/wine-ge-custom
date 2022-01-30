@@ -327,8 +327,8 @@ Build() {
         if [ "$INSTALL_DEPS" = "1" ]; then
             InstallDependencies
         fi
-        DownloadWine
-        DownloadWineStaging
+        # DownloadWine
+        # DownloadWineStaging
         if [ "$patch" ]; then
             ApplyPatch
         fi
