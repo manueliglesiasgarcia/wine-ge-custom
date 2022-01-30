@@ -124,7 +124,7 @@ jobs:
         run: git clone -b ${{ steps.branch-name.outputs.current_branch }} --recurse-submodules ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} .
 
       - name: Get Proton Versions
-        run: echo "RELEASE_VERSION=$(cat VERSION | cut -d ' ' -f 2 | tr '[:upper:]' '[:lower:]')-$(cat VERSION | cut -d ' ' -f 3 | cut -d '-' -f 1)" >> $GITHUB_ENV
+        run: echo "RELEASE_VERSION=$(cat VERSION | cut -d ' ' -f 3 | cut -d '-' -f 1)" >> $GITHUB_ENV
         
       - name: Display version
         run: echo ${{ env.RELEASE_VERSION }}
