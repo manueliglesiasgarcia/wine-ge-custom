@@ -3,12 +3,12 @@
 ### (1) PREP SECTION ###
 
     #WINE STAGING
-    cd wine-src/patches
+    # cd wine-src/patches
 
-    # faudio revert fix in staging:
-    patch -Np1 < ../../patches/wine-hotfixes/staging/x3daudio_staging_revert.patch
+    # # faudio revert fix in staging:
+    # patch -Np1 < ../../patches/wine-hotfixes/staging/x3daudio_staging_revert.patch
 
-    cd ../../
+    # cd ../../
 
 ### END PREP SECTION ###
 
