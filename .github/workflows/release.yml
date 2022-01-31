@@ -138,7 +138,9 @@ jobs:
   
       - name: Move Archive
         run: |
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ls -l && ls"
           ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-*.tar.xz ~/"
+          ssh ubuntu@buildbot-bionic-amd64 "cd ~/ && ls -l && ls"
           scp ubuntu@buildbot-bionic-amd64:~/wine-*.tar.xz ~/
           ls
           ls -l
@@ -287,7 +289,9 @@ jobs:
   
       - name: Move Archive
         run: |
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ls -l && ls"
           ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-*.tar.xz ~/"
+          ssh ubuntu@buildbot-bionic-amd64 "cd ~/ && ls -l && ls"
           scp ubuntu@buildbot-bionic-amd64:~/wine-*.tar.xz ~/
           ls
           ls -l
