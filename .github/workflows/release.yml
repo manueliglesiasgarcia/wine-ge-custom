@@ -15,6 +15,12 @@ jobs:
       - name: Clone repo
         run: git clone -b ${{ steps.branch-name.outputs.current_branch }} ${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY} . && git submodule update --init buildbot
 
+      - name: Test
+        run: |
+          ls ~/
+          ls /home/runner/
+          ls /home/runner/work/
+
       - name: Get Proton Versions
         run: echo "RELEASE_VERSION=$(cat VERSION | cut -d ' ' -f 3 | cut -d '-' -f 1)" >> $GITHUB_ENV
         
@@ -139,11 +145,11 @@ jobs:
       - name: Move Archive
         run: |
           ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ls"
-          ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-lutris-*.tar.xz ~/"
+          ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-*.tar.xz ~/"
           ssh ubuntu@buildbot-bionic-amd64 "cd ~/ && ls"
           scp ubuntu@buildbot-bionic-amd64:~/wine-lutris-${{ env.RELEASE_VERSION }}.tar.xz ~/
           ls
-          mv lutris-${{ env.RELEASE_VERSION }}-x86_64.tar.xz wine-lutris-${{ env.RELEASE_VERSION }}-ge-x86_64.tar.xz
+          mv wine-lutris-${{ env.RELEASE_VERSION }}-x86_64.tar.xz wine-lutris-${{ env.RELEASE_VERSION }}-ge-x86_64.tar.xz
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
