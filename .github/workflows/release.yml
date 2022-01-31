@@ -21,6 +21,7 @@ jobs:
           ls /home/runner/
           ls /home/runner/work/
           ls /home/runner/work/${{ github.event.repository.name }}/
+          ls /home/runner/work/${{ github.event.repository.name }}/${{ github.event.repository.name }}/
 
       - name: Get Proton Versions
         run: echo "RELEASE_VERSION=$(cat VERSION | cut -d ' ' -f 3 | cut -d '-' -f 1)" >> $GITHUB_ENV
