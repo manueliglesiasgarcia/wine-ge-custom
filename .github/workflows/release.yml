@@ -138,13 +138,12 @@ jobs:
   
       - name: Move Archive
         run: |
-          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ls -l && ls"
-          ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-*.tar.xz ~/"
-          ssh ubuntu@buildbot-bionic-amd64 "cd ~/ && ls -l && ls"
-          scp ubuntu@buildbot-bionic-amd64:~/wine-*.tar.xz ~/
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ls"
+          ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-lutris-*.tar.xz ~/"
+          ssh ubuntu@buildbot-bionic-amd64 "cd ~/ && ls"
+          scp ubuntu@buildbot-bionic-amd64:~/wine-lutris-${{ env.RELEASE_VERSION }}.tar.xz ~/
           ls
-          ls -l
-          mv wine-lutris-${{ env.RELEASE_VERSION }}-x86_64.tar.xz wine-lutris-${{ env.RELEASE_VERSION }}-ge-x86_64.tar.xz
+          mv lutris-${{ env.RELEASE_VERSION }}-x86_64.tar.xz wine-lutris-${{ env.RELEASE_VERSION }}-ge-x86_64.tar.xz
 
       - name: Upload binaries to release
         uses: svenstaro/upload-release-action@v2
@@ -152,7 +151,7 @@ jobs:
           repo_token: ${{ secrets.PROTON_GE_GITHUB_ACTIONS_BUILD }}
           file: wine-lutris-${{ env.RELEASE_VERSION }}-ge-x86_64.tar.xz
           file_glob: true
-          tag: "wine-${{ env.RELEASE_VERSION }}-ge-build-${{ github.run_number }}"
+          tag: "wine-lutris-${{ env.RELEASE_VERSION }}-ge-build-${{ github.run_number }}"
           overwrite: false
 
   build-wine-ge-lol:
@@ -289,12 +288,11 @@ jobs:
   
       - name: Move Archive
         run: |
-          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ls -l && ls"
-          ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-*.tar.xz ~/"
-          ssh ubuntu@buildbot-bionic-amd64 "cd ~/ && ls -l && ls"
-          scp ubuntu@buildbot-bionic-amd64:~/wine-*.tar.xz ~/
+          ssh ubuntu@buildbot-bionic-amd64 "cd buildbot/runners/wine && ls"
+          ssh ubuntu@buildbot-bionic-amd64 "mv buildbot/runners/wine/wine-lol-*.tar.xz ~/"
+          ssh ubuntu@buildbot-bionic-amd64 "cd ~/ && ls"
+          scp ubuntu@buildbot-bionic-amd64:~/wine-lol-${{ env.RELEASE_VERSION }}*.tar.xz ~/
           ls
-          ls -l
           mv wine-lol-${{ env.RELEASE_VERSION }}-x86_64.tar.xz wine-lol-${{ env.RELEASE_VERSION }}-ge-x86_64.tar.xz
 
       - name: Upload binaries to release
